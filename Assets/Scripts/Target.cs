@@ -7,10 +7,12 @@ public class Target : MonoBehaviour
     private Rigidbody targetRb;
     private GameManager gameManager;
     private float minSpeed = 12;
-    private float maxSpeed = 16;
-    private float maxTorque = 10;
+    private float maxSpeed = 15;
+    private float maxTorque = 7;
     private float xRange = 4;
     private float ySpawnPos = -2;
+    public bool isAlive;
+ 
     public int pointValue;
     public ParticleSystem explosionParticle;
 
@@ -23,6 +25,7 @@ public class Target : MonoBehaviour
         targetRb.AddForce(RandomForce(), ForceMode.Impulse);
         targetRb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         transform.position = RandomSpawnPos();
+        
     }
 
     // Update is called once per frame
@@ -44,7 +47,10 @@ public class Target : MonoBehaviour
     Vector3 RandomSpawnPos()
     {
         return new Vector3(Random.Range(-xRange, xRange), ySpawnPos);
+        
     }
+
+   
 
     private void OnMouseDown()
     {
@@ -53,9 +59,14 @@ public class Target : MonoBehaviour
             Destroy(gameObject);
             Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
             gameManager.UpdateScore(pointValue);
+            if (gameObject.CompareTag("Bad"))
+            {
+                gameManager.GameOver();
+            }
         }
+    
 
-       
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,5 +76,11 @@ public class Target : MonoBehaviour
         {
             gameManager.GameOver();
         }
+    }
+
+    public void StartGame()
+    {
+        isAlive = true;
+
     }
 }
