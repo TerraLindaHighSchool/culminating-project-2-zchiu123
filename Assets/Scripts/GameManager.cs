@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+   
     public List<GameObject> targets;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     public GameObject titleScreen;
     private float spawnRate = 1.0f;
     private int score;
-        
+    
 
     // Start is called before the first frame update
     void Start()
@@ -45,12 +46,17 @@ public class GameManager : MonoBehaviour
     {
         score += scoreToAdd;
         scoreText.text = "Score: " + score;
+        if(score <= -20)
+        {
+            GameOver();
+        }
     }
     public void GameOver()
     {
         gameOverText.gameObject.SetActive(true);
         isGameActive = false;
         restartButton.gameObject.SetActive(true);
+        
     }
 
     public void RestartGame() 
@@ -66,7 +72,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpawnTarget());
         score = 0;
         UpdateScore(0);
-
+      
         titleScreen.gameObject.SetActive(false);
-    }    
+    }       
+
+   
 }
